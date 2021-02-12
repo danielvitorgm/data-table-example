@@ -1,0 +1,23 @@
+:root{
+    --nav-main-color: #1976d2;
+    --nav-secondary-color: white;
+
+    --table-main-color: black;
+    --table-secondary-color: rgba(0,0,0,.54);
+    /*tertiary color is used in bottom border of the table rows*/
+    --table-tertiary-color: rgba(0,0,0,.12);
+
+    --table-odd-row-color: deeppink;
+    --table-even-row-color: cyan;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Roboto,sans-serif;
+}
+
+html{
+    font-size: 14px;
+}

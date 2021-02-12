@@ -1,0 +1,82 @@
+.data-table > nav{
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+
+    background-color: var(--nav-main-color);
+
+    top: 0;
+    position: fixed;
+    z-index: 1;
+
+    justify-content: space-between;
+}
+
+.data-table__title{
+    color: var(--nav-secondary-color);
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: .02em;
+}
+
+.data-table__options{
+    width: 50%;
+}
+
+.data-table__options--input{
+    /* 100% of parent width - data-table-option--more width */
+    width: calc(100% - 48px);
+}
+
+.data-table__options--more{
+    width: 48px;
+}
+
+.data-table__options--more > svg{
+    fill: var(--nav-secondary-color);
+}
+
+.data-table__options--input > input{
+    width: 100%;
+    height: 32px;
+
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+
+    z-index: 1;
+    bottom: 2px;
+
+    /* 
+        we use a transparent color so the text typed in the input will be transparent
+        thus removing the blinking |, then we set the text shadow, so the user can see
+        what he is typing
+    */
+    color: rgba(0, 0, 0, 0);
+    text-shadow: 0 0 0 var(--nav-secondary-color);
+}
+
+.data-table__options--input > input:focus{
+    outline: none;
+}
+
+.data-table__options--input > input::placeholder{
+    /* 
+        placeholders don't allow rgba colors, so we have to use opacity to change a color
+        alpha
+    */
+    opacity: .7;
+    color: var(--nav-secondary-color);
+    font-size: 16px;
+}
+
+.data-table__options--input-icon{
+    width: 32px;
+    height: 32px;
+    
+    bottom: 2px;
+    right: 0;
+}
+
+.data-table__options--input-icon > svg{
+    fill: var(--nav-secondary-color);
+}
