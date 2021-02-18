@@ -1,0 +1,69 @@
+/* creating a distance between the table and the navbar*/
+.table-data{
+    margin-top: 48px;
+}
+
+.table-data > .table-header > div > span{
+    color: var(--table-secondary-color);
+}
+
+.table-data > ul{
+    list-style: none;
+
+    display: flex;
+    justify-content: space-around;
+
+    border-bottom: 1px solid var(--table-tertiary-color);
+}
+
+.table-data > ul > div{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    padding: 16px 0;
+}
+
+.table-data > ul > div > span{
+    width: 50%;
+
+    color: var(--table-main-color);
+    font-weight: 500;
+    font-size: 12px;
+}
+
+@media only screen and (max-width: 768px){
+
+    .table-data > .table-header{
+        display: none;
+    }
+
+    .table-data > ul{
+        padding-top: 16px;
+        display: grid;
+    }
+
+    .table-data > ul:nth-child(odd){
+        border-left: 6px solid var(--table-odd-row-color);
+    }
+
+    .table-data > ul:nth-child(even){
+        border-left: 6px solid var(--table-even-row-color);
+    }
+
+    .table-data > ul > div > span{
+        position: relative;
+
+        font-weight: bold;
+    }
+
+    .table-data > ul > div > span::before{
+        content: attr(data-label);
+
+        top: -14px;
+        left: 0;
+        position: absolute;
+        
+        color: var(--table-secondary-color);
+    }
+}
