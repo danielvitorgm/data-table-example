@@ -5,140 +5,91 @@ I was given a task to recreate a vue component([this one](https://codepen.io/Jay
 ## Usage
 
 First create a main element(tables were not used here because i wanted more align power for
-the rols and columns), add an arbitrary id name(the id is needed for the js part) and a table-data class to it.
+the rols and columns), add an arbitrary id name and a table-data class to it.
 
-    <main id="data-table" class="table-data">
-    </main>
+    <main id="data-table" class="table-data"></main>
 
-Then create ul's up to the number of rows you want.
 
-    <main id="data-table" class="table-data">
-        <ul></ul>
-        <ul></ul>
-        <ul></ul>
-    </main>
+The html code is done, now we need to create an array containing objects that contain
+the property name, this will be the name of our columns, optionally those objects can
+have a mobileName property, this property indicates what will be name of the column in
+mobile devices(is useful when some column have a long name).
 
-Inside each ul, add div's up to the number of columns you want.
+    let columns = [
+        {
+            name: 'Dessert (100g serving)',
+            mobileName: 'Name'
+        },
+        {
+            name: 'Calories'
+        },
+        {
+            name: 'Fat (g)'
+        },
+        {
+            name: 'Carbs (g)'
+        },
+        {
+            name: 'Protein (g)'
+        },
+        {
+            name: 'Iron (%)'
+        }
+    ]
 
-    <main id="data-table" class="table-data">
-        <ul>
-            <div></div>
-            <div></div>
-            <div></div>
-        </ul>
-        <ul>
-            <div></div>
-            <div></div>
-            <div></div>
-        </ul>
-        <ul>
-            <div></div>
-            <div></div>
-            <div></div>
-        </ul>
-    </main>
+Now, create a new array, inside this array create arrays up to the number of rows you
+want in your table, the inner arrays will contain the data of each column.
 
-After that we add one span element inside each div, each span containing our column value
-and a data-label property containing the label we want that column to have in small devices,
-optionally we can add the class text-overflow to the span's so the text inside then won't
-break lines.
+    let data = [
+        [
+            'Cupcake',
+            '305',
+            '3.7',
+            '67',
+            '4.3',
+            '8%'
+        ],
+        [
+            'Donut',
+            '462',
+            '25',
+            '51',
+            '4.9',
+            '22%'
+        ],
+        [
+            'Eclair',
+            '262',
+            '16',
+            '23',
+            '6',
+            '7%'
+        ]
+    ]
 
-    <main id="data-table" class="table-data">
-        <ul>
-            <div>
-                <span data-label="Name" class="text-overflow">Cupcake</span>
-            </div>
-            <div>
-                <span data-label="Calories" class="text-overflow">305</span>
-            </div>
-            <div>
-                <span data-label="Fat (g)" class="text-overflow">3.7</span>
-            </div>
-        </ul>
-        <ul>
-            <div>
-                <span data-label="Name" class="text-overflow">Donut</span>
-            </div>
-            <div>
-                <span data-label="Calories" class="text-overflow">462</span>
-            </div>
-            <div>
-                <span data-label="Fat (g)" class="text-overflow">25</span>
-            </div>
-        </ul>
-        <ul>
-            <div>
-                <span data-label="Name" class="text-overflow">Eclair</span>
-            </div>
-            <div>
-                <span data-label="Calories" class="text-overflow">262</span>
-            </div>
-            <div>
-                <span data-label="Fat (g)" class="text-overflow">16</span>
-            </div>
-        </ul>
-    </main>
+Now all we need to do is create a new DataTble object, to do so we will need the id of our
+data table element(data-table), the number of columns we want it to have in small devices,
+our table columns and our table data.
 
-Optionally, we can add a new ul with the class table-header to create the table header,
-the spans of the table header don't need a data-label, since the table-header doesn't
-appear in small screens.
+    const tableId = 'data-table'
+    const columnCountInSmallDevices = 2
 
-    <main id="data-table" class="table-data">
-        <ul class="table-header">
-            <div>
-                <span class="text-overflow">Dessert (100g serving)</span>
-            </div>
-            <div>
-                <span class="text-overflow">Calories</span>
-            </div>
-            <div>
-                <span class="text-overflow">Fat (g)</span>
-            </div>
-        </ul>
-        <ul>
-            <div>
-                <span data-label="Name" class="text-overflow">Cupcake</span>
-            </div>
-            <div>
-                <span data-label="Calories" class="text-overflow">305</span>
-            </div>
-            <div>
-                <span data-label="Fat (g)" class="text-overflow">3.7</span>
-            </div>
-        </ul>
-        <ul>
-            <div>
-                <span data-label="Name" class="text-overflow">Donut</span>
-            </div>
-            <div>
-                <span data-label="Calories" class="text-overflow">462</span>
-            </div>
-            <div>
-                <span data-label="Fat (g)" class="text-overflow">25</span>
-            </div>
-        </ul>
-        <ul>
-            <div>
-                <span data-label="Name" class="text-overflow">Eclair</span>
-            </div>
-            <div>
-                <span data-label="Calories" class="text-overflow">262</span>
-            </div>
-            <div>
-                <span data-label="Fat (g)" class="text-overflow">16</span>
-            </div>
-        </ul>
-    </main>
-
-The html code is done, now we need to create a DataTable object in javascript, to
-do this we call the constructor using the id we gave to the data table and a number,
-this number represents the number of columns in which every row will turn in small devices.
-
-    let dataTable = new DataTable('data-table', 2)
-
-Also, every time you add a new row in the table call the adaptTable method.
-
-    let dataTable = new DataTable('data-table', 2)
-    dataTable.adaptTable()
+    let dataTable = new DataTable(tableId, columnCountInSmallDevices, columns, data)
 
 ##### The complete example can be found at src/html/index.html
+
+You can also insert a new row to the table object using the method insertRow, update a row using updateRow or delete a row using deleteRow.
+
+    const row = [
+        'Frozen Yogurt',
+        '159',
+        '6',
+        '24',
+        '4',
+        '1%'
+    ]
+    const position = 0
+
+    dataTable.insertRow(row)
+    dataTable.updateRow(position, row)
+    dataTable.deleteRow(position)
