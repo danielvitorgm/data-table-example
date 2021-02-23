@@ -6,9 +6,12 @@
     background-color: var(--nav-main-color);
 
     top: 0;
+    left: 0;
     position: fixed;
     z-index: 1;
 
+    display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 
@@ -21,30 +24,20 @@
 
 .data-table__options{
     width: 50%;
+    height: 100%;
+
+    position: relative;
 }
 
-.data-table__options--input{
+.data-table__options > input{
     /* 100% of parent width - data-table-option--more width */
     width: calc(100% - 48px);
-}
-
-.data-table__options--more{
-    width: 48px;
-}
-
-.data-table__options--more > svg{
-    fill: var(--nav-secondary-color);
-}
-
-.data-table__options--input > input{
-    width: 100%;
     height: 32px;
 
     border: none;
     background-color: rgba(0, 0, 0, 0);
 
     z-index: 1;
-    bottom: 2px;
 
     /* 
         we use a transparent color so the text typed in the input will be transparent
@@ -53,13 +46,17 @@
     */
     color: rgba(0, 0, 0, 0);
     text-shadow: 0 0 0 var(--nav-secondary-color);
+
+    left: 0;
+    top: 8px;
+    position: absolute;
 }
 
-.data-table__options--input > input:focus{
+.data-table__options > input:focus{
     outline: none;
 }
 
-.data-table__options--input > input::placeholder{
+.data-table__options > input::placeholder{
     /* 
         placeholders don't allow rgba colors, so we have to use opacity to change a color
         alpha
@@ -69,14 +66,22 @@
     font-size: 16px;
 }
 
-.data-table__options--input-icon{
-    width: 32px;
-    height: 32px;
-    
-    bottom: 2px;
-    right: 0;
+.data-table__options > svg{
+    fill: var(--nav-secondary-color);
 }
 
-.data-table__options--input-icon > svg{
-    fill: var(--nav-secondary-color);
+.data-table__options > .input-icon{
+    height: 32px;
+
+    top: 8px;
+    right: 48px;
+    position: absolute;
+}
+
+.data-table__options > .more{
+    width: 48px;
+
+    right: 0;
+    top: 12px;
+    position: absolute;
 }
