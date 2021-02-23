@@ -1,6 +1,9 @@
 /* creating a distance between the table and the navbar*/
 .table-data{
     margin-top: 48px;
+
+    height: calc(100vh - 48px);
+    overflow: scroll;
 }
 
 .table-data > .table-header > div > span{
