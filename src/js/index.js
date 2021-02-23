@@ -1,3 +1,16 @@
+function randomData(data, length) {
+    let randomArray = []
+    for(let i = 0; i < length; i++){
+        let row = []
+        for(let j = 0; j < data[0].length; j++){
+            row.push(data[Math.floor(Math.random() * data.length)][j])
+        }
+        randomArray.push(row)
+    }
+    return randomArray
+}
+
+
 let columns = [
     {
         name: 'Dessert (100g serving)',
@@ -105,5 +118,32 @@ let data = [
 
 const tableId = 'data-table'
 const columnCountInSmallDevices = 2
+//How many items will be loaded on the screen?
+const itemsPerScroll = 20
 
-let dataTable = new DataTable(tableId, columnCountInSmallDevices, columns, data)
+//generating random mocked data
+const fullData = randomData(data, 1000)
+
+//Starts at the first element of the array, then icreases as user scrolls
+var start = 0
+var end = start + itemsPerScroll <= fullData.length ? start + itemsPerScroll : fullData.length
+
+let dataTable = new DataTable(tableId, columnCountInSmallDevices, columns, fullData.slice(start, end))
+
+//this function must be called in the onscroll event of our datatable
+function infiniteScroll(){
+    /*
+        scrollheight is the total scroll of our element, scrollTop is how much the element
+        has been scrolled down, and body.scrollHeight is the page height
+    */
+    if(dataTable.element.scrollHeight - dataTable.element.scrollTop - document.body.scrollHeight <= 0){
+        //updating the indexes of the start and the end
+        start = end
+        end = start + itemsPerScroll <= fullData.length ? start + itemsPerScroll : fullData.length
+        //getting and adding new rows
+        let newRows = fullData.slice(start, end)
+        for(let i = 0; i < newRows.length; i++){
+            dataTable.insertRow(newRows[i])
+        }
+    }
+}
