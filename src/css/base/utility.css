@@ -3,3 +3,28 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+.pull-to-refresh{
+    top: 0;
+    left: 0;
+    position: absolute;
+    /*100% - 15px prevents the pull to refresh from covering the scrollbar*/
+    width: calc(100% - 15px);
+    height: 300px;
+    opacity: 0;
+    cursor: pointer !important;
+}
+
+.pull-to-refresh:hover, .pull-to-refresh:active{
+    cursor: pointer;
+}
+
+.pull-to-refresh__icon{
+    color: var(--nav-main-color);
+    width: 25px;
+    height: 25px;
+    top: 0;
+    left: calc(50% - 12.5px);
+    position: absolute;
+    text-align: center;
+}

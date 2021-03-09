@@ -8,6 +8,8 @@
 
     <!--Use this font instead of default browser roboto sans-serif-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons">
+    <!--Importing icons-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="../css/index.css">
 </head>
@@ -49,7 +51,10 @@
             </div>
         </nav>
 
-        <main id="data-table" class="table-data" onscroll="infiniteScroll()"></main>
+        <main id="data-table" class="table-data" onscroll="infiniteScroll()" ondragover="allowDrop(event)">
+            <span class="material-icons pull-to-refresh__icon">replay</span>
+            <div class="pull-to-refresh" draggable="true" ondrag="pullToRefresh(event)" ondrop="userDropped(event)"></div>
+        </main>
 
     </div>
     <script src="../js/dataTable.js"></script>

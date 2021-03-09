@@ -122,13 +122,14 @@ const columnCountInSmallDevices = 2
 const itemsPerScroll = 20
 
 //generating random mocked data
-const fullData = randomData(data, 1000)
+let fullData = randomData(data, 1000)
 
 //Starts at the first element of the array, then icreases as user scrolls
 var start = 0
 var end = start + itemsPerScroll <= fullData.length ? start + itemsPerScroll : fullData.length
-
-let dataTable = new DataTable(tableId, columnCountInSmallDevices, columns, fullData.slice(start, end))
+var lastPull = 0
+var userStoppedPulling = true
+var dataTable = new DataTable(tableId, columnCountInSmallDevices, columns, fullData.slice(start, end))
 
 //this function must be called in the onscroll event of our datatable
 function infiniteScroll(){
@@ -146,4 +147,45 @@ function infiniteScroll(){
             dataTable.insertRow(newRows[i])
         }
     }
+}
+
+function pullToRefresh(event){
+    if(userStoppedPulling){
+        if(lastPull == 0){
+            lastPull = event.screenY
+        }else if(event.screenY - lastPull >= 0 && event.screenY - lastPull <= 100){
+            let elem = dataTable.element.getElementsByClassName('pull-to-refresh__icon')[0]
+            elem.setAttribute('style', 
+                'top: ' + (event.screenY - lastPull).toString() + 'px;' +
+                'opacity: ' + ((event.screenY - lastPull) / 100).toString() + ';' +
+                'transform: rotateZ(' + (-360 * (event.screenY - lastPull) / 100).toString() + 'deg);'
+            )
+        }else if(event.screenY - lastPull > 100){
+            let elem = dataTable.element.getElementsByClassName('pull-to-refresh__icon')[0]
+            elem.setAttribute('style', '')
+            lastPull = 0
+            userStoppedPulling = false
+            for(let i = 0; i < end - 1; i++){
+                dataTable.deleteRow(0)
+            }
+            start = 0
+            end = itemsPerScroll
+            fullData = randomData(data, 1000)
+            newRows = fullData.slice(start, end)
+            for(let i = 0; i < newRows.length; i++){
+                dataTable.insertRow(newRows[i])
+            }
+        }
+    }
+}
+
+function userDropped(event){
+    let elem = dataTable.element.getElementsByClassName('pull-to-refresh__icon')[0]
+    elem.setAttribute('style', '')
+    lastPull = 0
+    userStoppedPulling = true
+}
+
+function allowDrop(event){
+    event.preventDefault()
 }
