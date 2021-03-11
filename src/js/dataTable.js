@@ -63,12 +63,17 @@ class DataTable{
 
     deleteRow(position){
         /*
-            We should use position + 3 because of the header, pull to refresh and icon,
-            they're the three first child nodes, so the first row of the table
-            is the fourth child node and so on, however, there is some weird javascript
-            bug, it will remove one or all of the three elements above if we use a
-            number smaller than 6
+            We use position + 1 because of the header, it is the first child
+            node, so the first row of the table is the second child node and
+            so on
         */
-        this.element.childNodes[position + 6].remove()
+        this.element.childNodes[position + 1].remove()
+    }
+
+    deleteAll(){
+        let elements = this.element.childNodes.length - 1
+        for(let i = 0; i < elements; i++){
+            this.deleteRow(0)
+        }
     }
 }

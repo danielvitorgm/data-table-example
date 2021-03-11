@@ -4,27 +4,48 @@
     white-space: nowrap;
 }
 
-.pull-to-refresh{
-    top: 0;
+#pull-to-refresh{
+    top: 48px;
     left: 0;
     position: absolute;
     /*100% - 15px prevents the pull to refresh from covering the scrollbar*/
     width: calc(100% - 15px);
-    height: 300px;
+    height: 150px;
     opacity: 0;
-    cursor: pointer !important;
+    z-index: 1;
 }
 
-.pull-to-refresh:hover, .pull-to-refresh:active{
+#pull-to-refresh:hover{
     cursor: pointer;
 }
 
-.pull-to-refresh__icon{
-    color: var(--nav-main-color);
-    width: 25px;
-    height: 25px;
-    top: 0;
-    left: calc(50% - 12.5px);
+.pull--down, .pull--up{
+    width: 250px;
+    height: 60px;
+    top: 75px;
+    left: calc(50% - 125px);
     position: absolute;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pull--down > .up{
+    display: none;
+}
+
+.pull--up > .down{
+    display: none;
+}
+
+.pull--down > span, .pull--up > span{
+    transition: all .2s;
+}
+
+.pull--up > span{
+    color: var(--nav-main-color);
+}
+
+.pull--up > .material-icons{
+    transform: rotateZ(180deg);
 }

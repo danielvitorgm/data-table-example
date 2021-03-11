@@ -127,12 +127,19 @@ let fullData = randomData(data, 1000)
 //Starts at the first element of the array, then icreases as user scrolls
 var start = 0
 var end = start + itemsPerScroll <= fullData.length ? start + itemsPerScroll : fullData.length
-var lastPull = 0
-var userStoppedPulling = true
+var firstPull = 0
+var messageChanged = true
+var readyToRefresh = false
 var dataTable = new DataTable(tableId, columnCountInSmallDevices, columns, fullData.slice(start, end))
 
 //this function must be called in the onscroll event of our datatable
 function infiniteScroll(){
+    //allowing pull to refresh
+    if(dataTable.element.scrollTop > 0){
+        document.getElementById('pull-to-refresh').setAttribute('style', 'display: none;')
+    }else{
+        document.getElementById('pull-to-refresh').setAttribute('style', '')
+    }
     /*
         scrollheight is the total scroll of our element, scrollTop is how much the element
         has been scrolled down, and body.scrollHeight is the page height
@@ -150,40 +157,41 @@ function infiniteScroll(){
 }
 
 function pullToRefresh(event){
-    if(userStoppedPulling){
-        if(lastPull == 0){
-            lastPull = event.screenY
-        }else if(event.screenY - lastPull >= 0 && event.screenY - lastPull <= 100){
-            let elem = dataTable.element.getElementsByClassName('pull-to-refresh__icon')[0]
-            elem.setAttribute('style', 
-                'top: ' + (event.screenY - lastPull).toString() + 'px;' +
-                'opacity: ' + ((event.screenY - lastPull) / 100).toString() + ';' +
-                'transform: rotateZ(' + (-360 * (event.screenY - lastPull) / 100).toString() + 'deg);'
-            )
-        }else if(event.screenY - lastPull > 100){
-            let elem = dataTable.element.getElementsByClassName('pull-to-refresh__icon')[0]
-            elem.setAttribute('style', '')
-            lastPull = 0
-            userStoppedPulling = false
-            for(let i = 0; i < end - 1; i++){
-                dataTable.deleteRow(0)
-            }
-            start = 0
-            end = itemsPerScroll
-            fullData = randomData(data, 1000)
-            newRows = fullData.slice(start, end)
-            for(let i = 0; i < newRows.length; i++){
-                dataTable.insertRow(newRows[i])
-            }
+    if(firstPull == 0){
+        firstPull = event.screenY
+    }else if(event.screenY - firstPull <= 100){
+        dataTable.element.setAttribute('style', 'top: ' + (48 + event.screenY - firstPull).toString() + 'px;')
+        if(event.screenY - firstPull >= 75 && messageChanged){
+            document.getElementsByClassName('pull--down')[0].setAttribute('class', 'pull--up')
+            messageChanged = false
+            readyToRefresh = true
+        }else if(event.screenY - firstPull < 75 && !messageChanged){
+            document.getElementsByClassName('pull--up')[0].setAttribute('class', 'pull--down')
+            messageChanged = true
+            readyToRefresh = false
         }
     }
 }
 
 function userDropped(event){
-    let elem = dataTable.element.getElementsByClassName('pull-to-refresh__icon')[0]
-    elem.setAttribute('style', '')
-    lastPull = 0
-    userStoppedPulling = true
+    if(readyToRefresh){
+        dataTable.deleteAll()
+        fullData = randomData(data, 1000)
+        start = 0
+        end = start + itemsPerScroll <= fullData.length ? start + itemsPerScroll : fullData.length
+        let newRows = fullData.slice(start, end)
+        for(let i = 0; i < newRows.length; i++){
+            dataTable.insertRow(newRows[i])
+        }
+    }
+    dataTable.element.setAttribute('style', '')
+    messageChanged = true
+    readyToRefresh = false
+    firstPull = 0
+    let elem = document.getElementsByClassName('pull--up')
+    for(let i = 0; i < elem.length; i++){
+        elem[i].setAttribute('class', 'pull--down')
+    }
 }
 
 function allowDrop(event){

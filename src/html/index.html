@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../css/index.css">
 </head>
 <body>
-    <div class="data-table">
+    <div class="data-table" ondragover="allowDrop(event)" ondrop="userDropped(event)">
         <nav>
             <div class="data-table__title">Nutrition</div>
             <div class="data-table__options">
@@ -50,11 +50,15 @@
                 <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
         </nav>
-
-        <main id="data-table" class="table-data" onscroll="infiniteScroll()" ondragover="allowDrop(event)">
-            <span class="material-icons pull-to-refresh__icon">replay</span>
-            <div class="pull-to-refresh" draggable="true" ondrag="pullToRefresh(event)" ondrop="userDropped(event)"></div>
-        </main>
+        <div class="pull--down">
+            <span class="material-icons">
+                arrow_downward
+            </span>
+            <span class="down">Pull down to refresh</span>
+            <span class="up">Pull up to cancel, release to refresh</span>
+        </div>
+        <div id="pull-to-refresh" draggable="true" ondrag="pullToRefresh(event)" on></div>
+        <main id="data-table" class="table-data" onscroll="infiniteScroll()"></main>
 
     </div>
     <script src="../js/dataTable.js"></script>
