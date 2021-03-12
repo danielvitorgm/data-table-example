@@ -50,6 +50,9 @@
                 <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
             </div>
         </nav>
+        <div class="reload-animation">
+            <span class="material-icons">replay</span>
+        </div>
         <div class="pull--down">
             <span class="material-icons">
                 arrow_downward
@@ -57,7 +60,7 @@
             <span class="down">Pull down to refresh</span>
             <span class="up">Pull up to cancel, release to refresh</span>
         </div>
-        <div id="pull-to-refresh" draggable="true" ondrag="pullToRefresh(event)" on></div>
+        <div id="pull-to-refresh" draggable="true" ondrag="pullToRefresh(event)" onmousewheel="scrollDown(event)"></div>
         <main id="data-table" class="table-data" onscroll="infiniteScroll()"></main>
 
     </div>

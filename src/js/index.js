@@ -10,6 +10,9 @@ function randomData(data, length) {
     return randomArray
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 let columns = [
     {
@@ -159,6 +162,10 @@ function infiniteScroll(){
 function pullToRefresh(event){
     if(firstPull == 0){
         firstPull = event.screenY
+    }else if(firstPull >= event.screenY){
+        const xAxisScroll = 0
+        const yAxisScroll = firstPull - event.screenY
+        dataTable.element.scroll(xAxisScroll,  yAxisScroll)
     }else if(event.screenY - firstPull <= 100){
         dataTable.element.setAttribute('style', 'top: ' + (48 + event.screenY - firstPull).toString() + 'px;')
         if(event.screenY - firstPull >= 75 && messageChanged){
@@ -173,13 +180,23 @@ function pullToRefresh(event){
     }
 }
 
-function userDropped(event){
+async function userDropped(event){
     if(readyToRefresh){
         dataTable.deleteAll()
         fullData = randomData(data, 1000)
         start = 0
         end = start + itemsPerScroll <= fullData.length ? start + itemsPerScroll : fullData.length
         let newRows = fullData.slice(start, end)
+        dataTable.element.setAttribute('style', '')
+        messageChanged = true
+        readyToRefresh = false
+        firstPull = 0
+        let elem = document.getElementsByClassName('reload-animation')[0]
+        elem.setAttribute('style', 'z-index: 1')
+        const millisecond = 1
+        const second = 1000 * millisecond
+        await sleep(3 * second)
+        elem.setAttribute('style', '')
         for(let i = 0; i < newRows.length; i++){
             dataTable.insertRow(newRows[i])
         }
@@ -196,4 +213,10 @@ function userDropped(event){
 
 function allowDrop(event){
     event.preventDefault()
+}
+
+function scrollDown(event){
+    if(event.deltaY > 0){
+        document.getElementById('pull-to-refresh').setAttribute('style', 'display: none;')
+    }
 }
